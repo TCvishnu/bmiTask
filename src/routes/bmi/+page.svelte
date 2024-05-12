@@ -14,24 +14,45 @@
         }
     };
 
-    const handleSubmit = () => {
-        const url = `https://fitness-calculator.p.rapidapi.com/bmi?age=${age}&weight=${weight}&height=${height}`;
-        fetch(url, options)
-        .then(response => {
-        if (response.ok) {
-            invalid = false; // Correct data set provided
-            return response.json();
-        } else if (response.status === 422) {
-            invalid = true //Display required input condition for BMI Calculation
-        } else {
-            throw new Error("Network response was not ok: " + response.status);
-        }
-    })
-    .then(json => {
-        bmiData = json;
-    })
-    .catch(error => console.log("Error: ", error));
+    // const handleSubmit = () => {
+    //     const url = `https://fitness-calculator.p.rapidapi.com/bmi?age=${age}&weight=${weight}&height=${height}`;
+    //     fetch(url, options)
+    //     .then(response => {
+    //     if (response.ok) {
+    //         invalid = false; // Correct data set provided
+    //         return response.json();
+    //     } else if (response.status === 422) {
+    //         invalid = true //Display required input condition for BMI Calculation
+    //     } else {
+    //         throw new Error("Network response was not ok: " + response.status);
+    //     }
+    // })
+    // .then(json => {
+    //     bmiData = json;
+    // })
+    // .catch(error => console.log("Error: ", error));
+    // }
 
+    const handleSubmit = async () => {
+        const url = `https://fitness-calculator.p.rapidapi.com/bmi?age=${age}&weight=${weight}&height=${height}`;
+        try {
+            const response = await fetch(url, options);
+
+            if (!response.ok) {
+                if (response.status === 422) {
+                    invalid = true;
+                } else {
+                    throw new Error('Network response was not ok.');
+                }
+            } else {
+                bmiData = await response.json();
+                invalid = false;
+            }
+            
+        } catch (error) {
+            //@ts-ignore
+            console.error('Error fetching data: ', error.message);
+        }    
     }
 
 </script>
