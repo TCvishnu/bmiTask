@@ -14,25 +14,6 @@
         }
     };
 
-    // const handleSubmit = () => {
-    //     const url = `https://fitness-calculator.p.rapidapi.com/bmi?age=${age}&weight=${weight}&height=${height}`;
-    //     fetch(url, options)
-    //     .then(response => {
-    //     if (response.ok) {
-    //         invalid = false; // Correct data set provided
-    //         return response.json();
-    //     } else if (response.status === 422) {
-    //         invalid = true //Display required input condition for BMI Calculation
-    //     } else {
-    //         throw new Error("Network response was not ok: " + response.status);
-    //     }
-    // })
-    // .then(json => {
-    //     bmiData = json;
-    // })
-    // .catch(error => console.log("Error: ", error));
-    // }
-
     const handleSubmit = async () => {
         const url = `https://fitness-calculator.p.rapidapi.com/bmi?age=${age}&weight=${weight}&height=${height}`;
         try {
@@ -57,144 +38,69 @@
 
 </script>
 
+<div class=" w-screen h-screen flex flex-col items-center justify-start gap-8">
+    <h1 class=" my-4 text-2xl text-blue font-medium">Calculate Your BMI</h1>
+    <div class=" w-4/12 flex flex-col items-center bg-white max-h-screen overflow-y-auto justify-center gap-4
+    form-shadow rounded-sm">
+        <h2 class="text-lg my-2">Enter Your Data</h2>
+
+        <div class="flex flex-col gap-2">
+            <p class=" text-sm">Age: </p>
+            <input bind:value={age} type="number" min="0" max="80"
+            class=" outline-none border-2 h-8 px-3 rounded-sm"/>
+        </div>
+        
+        <div class="flex flex-col gap-2" >
+            <p class=" text-sm">Weight (Kg): </p>
+            <input bind:value={weight} type="number" min="40" max="160"
+            class=" outline-none border-2 h-8 px-3 rounded-sm"/>
+        </div>
+        
+        <div class="flex flex-col gap-2">
+            <p class=" text-sm">Height (cm): </p>
+            <input bind:value={height} type="number" min="130" max="230"
+            class=" outline-none border-2 h-8 px-3 rounded-sm"/>
+        </div>
 
 
-<div class="main">
-    <h1>Calculate Your BMI</h1>
-    <div class="box">
-        <h2>Enter Your Data</h2>
-
-        <p>Age: </p>
-        <input bind:value={age} type="number" min="0" max="80"/>
-
-        <p>Weight (Kg): </p>
-        <input bind:value={weight} type="number" min="40" max="160"/>
-
-        <p>Height (cm): </p>
-        <input bind:value={height} type="number" min="130" max="230"/>
-
-        <button class="submitBtn"
+        <button class=" w-3/12 h-8 min-h-8 bg-blue my-4 text-white rounded-sm"
         on:click={handleSubmit}>Calculate</button>
 
         {#if bmiData && !invalid}
-        <div class="statusDiv">
-            <p class="bmiP">BMI: {bmiData.data.bmi}</p>
-            <p class="rangeP">Healthy Range: {bmiData.data.healthy_bmi_range}</p>
-            <p class={bmiData.data.health.includes('Healthy')? "healthy" : "risky"}>Status: {bmiData.data.health}</p>            
+        <div class="my-6 w-1/2 flex flex-col items-center justify-center gap-2">
+            <p class="">BMI: {bmiData.data.bmi}</p>
+            <p class="text-ash text-sm">Healthy Range: {bmiData.data.healthy_bmi_range}</p>
+            <p class={bmiData.data.health.includes('Healthy')? "healthy text-sm" : " text-red-600 text-sm"}>Status: {bmiData.data.health}</p>            
         </div>
         {/if}
 
         {#if invalid}
-            <div class="invalidDiv">
-                <p class="risky small">Please provide:  </p>
-                <p class="risky small">Age: 0 - 80</p>
-                <p class="risky small">Weight: 40 - 160</p>
-                <p class="risky small">Height: 130 - 230</p>
+            <div class="my-4 w-5/12 flex flex-col items-center">
+                <p class="text-red-600 text-sm">Please provide:  </p>
+                <p class="text-red-600 text-sm">Age: 0 - 80</p>
+                <p class="text-red-600 text-sm">Weight: 40 - 160</p>
+                <p class="text-red-600 text-sm">Height: 130 - 230</p>
             </div>
         {/if}
     </div>
 </div>
 
-
 <style>
-    h1 {
+    .text-blue{
         color: #5469d4;
     }
-
-    h2 {
-        font-size: large;
-        text-align: center;
-    }
-    .main{
-        width: 100%;
-        height: 100vh;
-        display: flex;
-        flex-direction: column;
-        justify-content: start;
-        align-items: center;
-        overflow-y: auto;
-    }
-
-    .box {
-        width: 35%;
-        height: 75%;
-        background-color: white;
-        box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-        border-radius: 2px;
-        align-items: center;
-        display: flex;
-        flex-direction: column;
-        overflow-y: auto;
-    }
-
-    input {
-        width: 60%;
-        height: 6%;
-        outline: none;
-        padding-left: 3%;
-        border: 1.5px solid #E8E9EB;
-        border-radius: 5px;
-        min-height: 25px;
-        font-size: small;
-    }
-    p {
-        width: 60%;
-        text-align: start;
-        font-size: small;
-    }
-
-    .submitBtn{
-        margin-top: 5%;
-        height: 7%;
-        width: 35%;
-        padding-left: 0%;
+    .bg-blue{
         background-color: #5469d4;
-        color: white;
-        border: none;
-        min-height: 30px;
-        border-radius: 5px;
+    }
+    .form-shadow{
+        box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
     }
 
-    .statusDiv {
-        width: 80%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        margin-top: 4%;
-    }
-
-    .bmiP {
-        font-size: medium;
-        text-align: center;
-    }
-
-    .rangeP{
-        font-size: small;
-        text-align: center;
+    .text-ash{
         color: #818284;
     }
 
     .healthy{
-        font-size: medium;
-        text-align: center;
         color: #2AD311;
-    }
-
-    .risky {
-        font-size: medium;
-        text-align: center;
-        color: #f32013;
-    }
-    .small {
-        font-size: small;
-        height: 1%;
-    }
-
-    .invalidDiv {
-        width: 70%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
     }
 </style>
